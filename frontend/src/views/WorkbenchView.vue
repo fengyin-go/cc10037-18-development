@@ -86,6 +86,9 @@
       </form>
     </div>
 
+    <CostReconciliationPanel v-if="meta.key === 'cost_analysis'" />
+    <ReceiptPanel v-if="meta.key === 'backfill_tracker'" />
+
     <footer class="page-foot">
       <span>共 {{ total }} 条{{ meta.name }}记录</span>
       <span v-if="errorMessage" class="error-text">{{ errorMessage }}</span>
@@ -103,6 +106,8 @@ import {
   moduleMeta,
   runAction as applyAction,
 } from '@/api/backend-service'
+import CostReconciliationPanel from '@/components/CostReconciliationPanel.vue'
+import ReceiptPanel from '@/components/ReceiptPanel.vue'
 import type { EntryRow } from '@/data/types'
 
 const props = defineProps<{ moduleKey: string }>()

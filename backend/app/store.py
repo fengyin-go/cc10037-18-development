@@ -10,13 +10,17 @@ from app.seed import SEED_ROWS
 
 
 class Store:
+    # 内部账本表：只服务费用核对链路，不当作业务模块出现在运营概览里。
+    INTERNAL_MODULES = {"backfill_receipt", "cost_period", "cost_revision"}
+
     def __init__(self) -> None:
         self._tables: dict[str, list[dict[str, Any]]] = {
             name: [dict(row) for row in rows] for name, rows in SEED_ROWS.items()
         }
 
     def module_names(self) -> list[str]:
-        return sorted(self._tables)
+        return sorted(
+            name for name in self._tables if name not in self.INTERNAL_MODULES)
 
     def rows(self, module: str) -> list[dict[str, Any]]:
         return self._tables.setdefault(module, [])
